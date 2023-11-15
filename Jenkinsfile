@@ -48,6 +48,13 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            junit testResults: "test-results/*.xml"
+            cleanWs()
+        }
+    }
+
 
     agent {
       label 'agent'
