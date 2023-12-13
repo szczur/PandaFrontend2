@@ -50,7 +50,7 @@ pipeline {
 		stage ('Push to Repo') {
 			steps {
 				dir('ArgoCD') {
-					withCredentials([gitUsernamePassword(credentialsId: 'git', gitToolName: 'Default')]) {
+					withCredentials([gitUsernamePassword(credentialsId: 'git1', gitToolName: 'Default')]) {
 						git branch: 'main', url: 'https://github.com/szczur/ArgoCD.git'
 						sh """ cd frontend
 						git config --global user.email "github-email"
@@ -69,9 +69,6 @@ pipeline {
         always {
             junit testResults: "test-results/*.xml"
             cleanWs()
-        }
-        success {
-            build job: 'app_of_apps', parameters: [ string(name: 'frontendDockerTag', value: "$dockerTag")], wait: false
         }
     }
 
